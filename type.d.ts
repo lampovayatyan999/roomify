@@ -1,4 +1,3 @@
-
 interface AuthState {
     isSignedIn: boolean;
     username: string | null;
