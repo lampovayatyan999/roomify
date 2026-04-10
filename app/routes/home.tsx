@@ -1,12 +1,15 @@
-import { ArrowRight, ArrowUpRight, Clock, Layers } from "lucide-react";
-import Navbar from "../../components/Navbar";
 import type { Route } from "./+types/home";
+<<<<<<< HEAD
 import Button from "../../components/ui/Button";
 import roomifyProject from "../welcome/roomify.png";
 import Upload from "../../components/Upload";
 import { useNavigate } from "react-router";
 import React from "react";
 import { createProject } from "../../lib/puter.action";
+=======
+import { Welcome } from "../welcome/welcome";
+
+>>>>>>> main
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "New React Router App" },
@@ -15,6 +18,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+<<<<<<< HEAD
   const navigate  = useNavigate()
   const [projects, setProjects] = React.useState<DesignItem[]>([]);
 
@@ -138,4 +142,7 @@ export default function Home() {
       </section>
     </div>
   );
+=======
+  return <Welcome />;
+>>>>>>> main
 }
