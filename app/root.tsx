@@ -1,27 +1,20 @@
 import {
-  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from "react-router";
-
-import type { Route } from "./+types/root";
+import { useState, useEffect } from "react";
+import { getCurrentUser, signIn, signOut } from "../lib/puter.action";
 import "./app.css";
 
-export const links: Route.LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-  },
-];
+type AuthContext = {
+  isSignedIn: boolean;
+  username: string | null;
+  signIn: () => Promise<void>;
+  signOut: () => Promise<void>;
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -41,35 +34,40 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
-  return <Outlet />;
-}
+export default function Root() {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
-  let stack: string | undefined;
+  useEffect(() => {
+    getCurrentUser().then((user: any) => {
+      if (user) {
+        setIsSignedIn(true);
+        setUsername(user.username || null);
+      }
+    });
+  }, []);
 
-  if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
-    details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
-    details = error.message;
-    stack = error.stack;
-  }
+  const handleSignIn = async () => {
+    await signIn();
+    const user = await getCurrentUser();
+    if (user) {
+      setIsSignedIn(true);
+      setUsername(user.username || null);
+    }
+  };
 
-  return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
-  );
+  const handleSignOut = async () => {
+    await signOut();
+    setIsSignedIn(false);
+    setUsername(null);
+  };
+
+  const contextValue: AuthContext = {
+    isSignedIn,
+    username,
+    signIn: handleSignIn,
+    signOut: handleSignOut,
+  };
+
+  return <Outlet context={contextValue} />;
 }

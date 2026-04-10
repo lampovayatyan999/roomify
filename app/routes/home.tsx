@@ -1,7 +1,6 @@
 import type { Route } from "./+types/home";
 
 import Button from "../../components/ui/Button";
-import roomifyProject from "../welcome/roomify.png";
 import Upload from "../../components/Upload";
 import { useNavigate } from "react-router";
 import React from "react";

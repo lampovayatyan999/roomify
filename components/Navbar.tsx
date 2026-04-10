@@ -3,7 +3,15 @@ import Button from "./ui/Button";
 import { useOutletContext } from "react-router";
 
 export default function Navbar() {
-  const { isSignedIn, username, signIn, signOut } = useOutletContext<AuthContext>();
+  const context = useOutletContext<AuthContext | undefined>();
+  
+  // Provide defaults if context is undefined
+  const { 
+    isSignedIn = false, 
+    username = null, 
+    signIn = async () => {}, 
+    signOut = async () => {} 
+  } = context || {};
 
   const handleAuthClick = async () => {
     if (isSignedIn) {

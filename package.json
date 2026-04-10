@@ -9,14 +9,12 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@heyputer/puter.js": "^2.2.15",
     "@react-router/fs-routes": "^7.14.0",
-=======
->>>>>>> main
     "@react-router/node": "7.14.0",
     "@react-router/serve": "7.14.0",
     "isbot": "^5.1.36",
+    "lucide-react": "^1.8.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router": "7.14.0"
