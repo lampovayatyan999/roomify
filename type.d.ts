@@ -1,6 +1,6 @@
 interface AuthState {
     isSignedIn: boolean;
-    usermame: string | null;
+    username: string | null;
     userId: string | null;
 }
 
